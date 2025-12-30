@@ -96,7 +96,7 @@ export async function POST(
 
     return NextResponse.json(examQuestion);
   } catch (error) {
-    console.error('Failed to add question to exam:', error);
+    console.error('Failed to add question to examination:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
