@@ -11,6 +11,8 @@ export default function CreateQuestionPage() {
   const [formData, setFormData] = useState({
     text: '',
     subject: 'Mathematics',
+    classLevel: 'JSS1',
+    term: 1,
     topic: '',
     difficulty: 'Medium',
     optionA: '',
@@ -22,6 +24,8 @@ export default function CreateQuestionPage() {
   });
 
   const subjects = ['Mathematics', 'English', 'Physics', 'Chemistry', 'Biology', 'Economics', 'Government', 'Literature'];
+  const classLevels = ['JSS1', 'JSS2', 'JSS3', 'SS1', 'SS2', 'SS3'];
+  const terms = [1, 2, 3];
   const difficulties = ['Easy', 'Medium', 'Hard'];
   const options = ['A', 'B', 'C', 'D', 'E'];
 
@@ -83,6 +87,47 @@ export default function CreateQuestionPage() {
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
               placeholder="Enter the question..."
             />
+          </div>
+
+          {/* Class Level & Term */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="classLevel" className="block text-sm font-medium text-gray-700 mb-1">
+                Class Level *
+              </label>
+              <select
+                id="classLevel"
+                required
+                value={formData.classLevel}
+                onChange={(e) => setFormData({ ...formData, classLevel: e.target.value })}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+              >
+                {classLevels.map((level) => (
+                  <option key={level} value={level}>
+                    {level}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label htmlFor="term" className="block text-sm font-medium text-gray-700 mb-1">
+                Term *
+              </label>
+              <select
+                id="term"
+                required
+                value={formData.term}
+                onChange={(e) => setFormData({ ...formData, term: parseInt(e.target.value) })}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+              >
+                {terms.map((term) => (
+                  <option key={term} value={term}>
+                    Term {term}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
           {/* Subject, Topic, Difficulty */}

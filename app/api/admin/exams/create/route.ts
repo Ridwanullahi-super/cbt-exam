@@ -21,6 +21,7 @@ export async function POST(request: Request) {
       randomize,
       shuffleOptions,
       negativeMarking,
+      showResultsImmediately,
       published,
       scheduledAt,
     } = body;
@@ -36,6 +37,7 @@ export async function POST(request: Request) {
         randomize: randomize || false,
         shuffleOptions: shuffleOptions !== undefined ? shuffleOptions : true,
         negativeMarking: negativeMarking || false,
+        showResultsImmediately: showResultsImmediately !== undefined ? showResultsImmediately : true,
         published: published || false,
         scheduledAt: scheduledAt ? new Date(scheduledAt) : null,
       },

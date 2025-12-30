@@ -14,6 +14,8 @@ export async function POST(request: Request) {
     const {
       text,
       subject,
+      classLevel,
+      term,
       topic,
       difficulty,
       optionA,
@@ -36,6 +38,8 @@ export async function POST(request: Request) {
       data: {
         text,
         subject,
+        classLevel: classLevel || null,
+        term: term || null,
         topic: topic || null,
         difficulty: difficulty || null,
         optionA,

@@ -22,6 +22,7 @@ export default function CreateExamPage() {
     randomize: false,
     shuffleOptions: true,
     negativeMarking: false,
+    showResultsImmediately: true,
     published: false,
     scheduledDate: '',
     scheduledTime: '',
@@ -52,7 +53,8 @@ export default function CreateExamPage() {
 
       if (response.ok) {
         const data = await response.json();
-        router.push(`/admin/exams/${data.id}`);
+        // Redirect to questions management page to add questions immediately
+        router.push(`/admin/exams/${data.id}/questions`);
       } else {
         alert('Failed to create exam');
       }
@@ -257,6 +259,18 @@ export default function CreateExamPage() {
                 />
                 <span className="ml-2 text-sm text-gray-700">
                   Enable negative marking for wrong answers
+                </span>
+              </label>
+
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  checked={formData.showResultsImmediately}
+                  onChange={(e) => setFormData({ ...formData, showResultsImmediately: e.target.checked })}
+                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                />
+                <span className="ml-2 text-sm text-gray-700">
+                  Show results to students immediately after submission
                 </span>
               </label>
 

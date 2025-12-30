@@ -15,6 +15,7 @@ interface Exam {
   randomize: boolean;
   shuffleOptions: boolean;
   negativeMarking: boolean;
+  showResultsImmediately: boolean;
   passMark: number | null;
   allowedAttempts: number;
   _count?: {
@@ -218,12 +219,21 @@ export default function ExamDetailPage() {
               </span>
             </div>
             
-            <div className="flex items-center justify-between py-2">
+            <div className="flex items-center justify-between py-2 border-b">
               <span className="text-sm text-gray-700">Negative marking</span>
               <span className={`px-2 py-1 text-xs font-semibold rounded ${
                 exam.negativeMarking ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-600'
               }`}>
                 {exam.negativeMarking ? 'Enabled' : 'Disabled'}
+              </span>
+            </div>
+            
+            <div className="flex items-center justify-between py-2">
+              <span className="text-sm text-gray-700">Show results immediately</span>
+              <span className={`px-2 py-1 text-xs font-semibold rounded ${
+                exam.showResultsImmediately ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+              }`}>
+                {exam.showResultsImmediately ? 'Yes' : 'Hidden'}
               </span>
             </div>
           </div>

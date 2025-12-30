@@ -12,7 +12,6 @@ generator client {
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
 }
 
 // Application models for Super Quiz
@@ -76,6 +75,8 @@ model Question {
   id          Int    @id @default(autoincrement())
   text        String
   subject     String
+  classLevel  String? // e.g., JSS1, JSS2, JSS3, SS1, SS2, SS3
+  term        Int?   // 1, 2, or 3
   topic       String?
   difficulty  String?
   optionA     String

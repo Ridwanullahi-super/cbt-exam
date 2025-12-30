@@ -16,7 +16,9 @@ interface Attempt {
 interface ExamResult {
   examTitle: string;
   passMark: number | null;
-  attempts: Attempt[];
+  showResults: boolean;
+  message?: string;
+  attempts?: Attempt[];
 }
 
 export default function StudentResultsPage() {
@@ -67,7 +69,54 @@ export default function StudentResultsPage() {
     );
   }
 
-  const latestAttempt = results.attempts[0];
+  // Check if results are hidden
+  if (!results.showResults) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <header className="bg-white shadow">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <Link
+              href="/student/dashboard"
+              className="text-indigo-600 hover:text-indigo-500 text-sm mb-1 inline-block"
+            >
+              ← Back to Dashboard
+            </Link>
+            <h1 className="text-2xl font-bold text-gray-900">Exam Submitted</h1>
+            <p className="text-gray-600">{results.examTitle}</p>
+          </div>
+        </header>
+
+        <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="bg-white rounded-lg shadow-lg p-8">
+            <div className="text-center">
+              <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-yellow-100 mb-4">
+                <svg className="h-10 w-10 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+              </div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">Your Exam Has Been Submitted</h2>
+              <p className="text-lg text-gray-600 mb-6">
+                {results.message || 'Results will be released by your instructor'}
+              </p>
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                <p className="text-sm text-blue-800">
+                  Your answers have been recorded successfully. Your instructor will review and release the results soon.
+                </p>
+              </div>
+              <Link
+                href="/student/dashboard"
+                className="inline-block px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+              >
+                Return to Dashboard
+              </Link>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  const latestAttempt = results.attempts![0];
   const passed = results.passMark ? latestAttempt.score >= results.passMark : null;
 
   return (
@@ -136,7 +185,7 @@ export default function StudentResultsPage() {
         </div>
 
         {/* All Attempts */}
-        {results.attempts.length > 1 && (
+        {results.attempts && results.attempts.length > 1 && (
           <div className="bg-white rounded-lg shadow p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">
               All Attempts ({results.attempts.length})
@@ -149,7 +198,7 @@ export default function StudentResultsPage() {
                 >
                   <div>
                     <p className="font-medium text-gray-900">
-                      Attempt #{results.attempts.length - index}
+                      Attempt #{results.attempts!.length - index}
                     </p>
                     <p className="text-sm text-gray-600">
                       {new Date(attempt.submittedAt).toLocaleString()}

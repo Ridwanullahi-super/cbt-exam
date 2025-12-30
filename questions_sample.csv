@@ -1,0 +1,6 @@
+text,subject,classLevel,term,topic,difficulty,optionA,optionB,optionC,optionD,optionE,correct
+"What is 2 + 2?",Mathematics,JSS1,1,Basic Arithmetic,Easy,3,4,5,6,,B
+"What is the capital of Nigeria?",Geography,SS1,2,African Geography,Medium,Lagos,Abuja,Kano,Port Harcourt,,B
+"Who wrote 'Things Fall Apart'?",Literature,SS2,1,African Literature,Easy,Wole Soyinka,Chinua Achebe,Chimamanda Adichie,Ben Okri,,B
+"What is the chemical symbol for water?",Chemistry,JSS3,3,Basic Chemistry,Easy,H2O,CO2,O2,H2,,A
+"What is the largest planet in our solar system?",Physics,SS1,1,Solar System,Medium,Earth,Mars,Jupiter,Saturn,,C

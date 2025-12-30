@@ -21,11 +21,22 @@ export async function GET(
       select: {
         title: true,
         passMark: true,
+        showResultsImmediately: true,
       },
     });
 
     if (!exam) {
       return NextResponse.json({ error: 'Exam not found' }, { status: 404 });
+    }
+
+    // Check if results should be shown
+    if (!exam.showResultsImmediately) {
+      return NextResponse.json({
+        examTitle: exam.title,
+        passMark: exam.passMark,
+        showResults: false,
+        message: 'Results will be released by your instructor',
+      });
     }
 
     // Get all attempts for this student and exam
@@ -58,6 +69,7 @@ export async function GET(
     return NextResponse.json({
       examTitle: exam.title,
       passMark: exam.passMark,
+      showResults: true,
       attempts: formattedAttempts,
     });
   } catch (error) {

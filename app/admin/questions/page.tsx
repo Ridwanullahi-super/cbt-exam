@@ -7,6 +7,8 @@ interface Question {
   id: number;
   text: string;
   subject: string;
+  classLevel?: string;
+  term?: number;
   topic: string | null;
   difficulty: string | null;
   optionA: string;
@@ -67,12 +69,20 @@ export default function AdminQuestionsPage() {
             </Link>
             <h1 className="text-2xl font-bold text-gray-900">Question Bank</h1>
           </div>
-          <Link
-            href="/admin/questions/create"
-            className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
-          >
-            + Add Question
-          </Link>
+          <div className="flex gap-3">
+            <Link
+              href="/admin/questions/bulk-upload"
+              className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors"
+            >
+              📤 Bulk Upload
+            </Link>
+            <Link
+              href="/admin/questions/create"
+              className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
+            >
+              + Add Question
+            </Link>
+          </div>
         </div>
       </header>
 
@@ -121,6 +131,16 @@ export default function AdminQuestionsPage() {
                       <span className="px-2 py-1 bg-indigo-100 text-indigo-800 text-xs font-medium rounded">
                         {question.subject}
                       </span>
+                      {question.classLevel && (
+                        <span className="px-2 py-1 bg-purple-100 text-purple-800 text-xs font-medium rounded">
+                          {question.classLevel}
+                        </span>
+                      )}
+                      {question.term && (
+                        <span className="px-2 py-1 bg-pink-100 text-pink-800 text-xs font-medium rounded">
+                          Term {question.term}
+                        </span>
+                      )}
                       {question.topic && (
                         <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">
                           {question.topic}

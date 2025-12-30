@@ -20,6 +20,7 @@ export async function GET(
       where: { id: examId },
       select: {
         title: true,
+        classLevel: true,
         questions: {
           include: {
             question: true,
@@ -37,6 +38,7 @@ export async function GET(
 
     return NextResponse.json({
       examTitle: exam.title,
+      classLevel: exam.classLevel,
       questions: exam.questions,
     });
   } catch (error) {
