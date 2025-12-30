@@ -1,0 +1,155 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// Application models for Super Quiz
+
+model Admin {
+  id         Int      @id @default(autoincrement())
+  email      String   @unique
+  name       String
+  password   String
+  role       Role     @default(EXAM_ADMIN)
+  createdAt  DateTime @default(now())
+  audits     AuditLog[]
+}
+
+model Student {
+  id           Int      @id @default(autoincrement())
+  studentId    String   @unique
+  firstName    String
+  lastName     String?
+  classLevel   String   // e.g., JSS1, JSS2, JSS3, SS1
+  section      String?
+  admissionNo  String?
+  dob          DateTime?
+  parentContact String?
+  email        String?
+  profilePhoto String?
+  createdAt    DateTime @default(now())
+  attempts     Attempt[]
+  audits       AuditLog[]
+}
+
+model SessionTerm {
+  id         Int     @id @default(autoincrement())
+  session    String
+  term       Int
+  exams      Exam[]
+}
+
+model Exam {
+  id             Int      @id @default(autoincrement())
+  title          String
+  description    String?
+  classLevel     String
+  sessionTerm    SessionTerm? @relation(fields: [sessionTermId], references: [id])
+  sessionTermId  Int?
+  durationMin    Int
+  scheduledAt    DateTime?
+  published      Boolean  @default(false)
+  randomize      Boolean  @default(false)
+  shuffleOptions Boolean  @default(true)
+  negativeMarking Boolean @default(false)
+  showResultsImmediately Boolean @default(true)
+  passMark       Float? 
+  allowedAttempts Int    @default(1)
+  createdAt      DateTime @default(now())
+  questions      ExamQuestion[]
+  attempts       Attempt[]
+}
+
+model Question {
+  id          Int    @id @default(autoincrement())
+  text        String
+  subject     String
+  topic       String?
+  difficulty  String?
+  optionA     String
+  optionB     String
+  optionC     String
+  optionD     String
+  optionE     String?
+  correct     String // e.g., "A" or "C" or "A,B"
+  createdAt   DateTime @default(now())
+  examItems   ExamQuestion[]
+}
+
+model ExamQuestion {
+  id         Int  @id @default(autoincrement())
+  exam       Exam @relation(fields: [examId], references: [id])
+  examId     Int
+  question   Question @relation(fields: [questionId], references: [id])
+  questionId Int
+  order      Int?
+}
+
+model Attempt {
+  id            Int      @id @default(autoincrement())
+  exam          Exam     @relation(fields:[examId], references:[id])
+  examId        Int
+  student       Student  @relation(fields:[studentId], references:[id])
+  studentId     Int
+  startedAt     DateTime @default(now())
+  submittedAt   DateTime?
+  autoSubmitted Boolean  @default(false)
+  score         Float?
+  answers       Answer[]
+  status        AttemptStatus @default(IN_PROGRESS)
+}
+
+model Answer {
+  id         Int @id @default(autoincrement())
+  attempt    Attempt @relation(fields:[attemptId], references:[id])
+  attemptId  Int
+  questionId Int
+  selected   String // e.g., "A" or "A,B"
+  isCorrect  Boolean?
+  mark       Float?
+}
+
+model AuditLog {
+  id        Int @id @default(autoincrement())
+  actorId   Int?
+  actorType ActorType?
+  action    String
+  resource  String?
+  resourceId Int?
+  meta      Json?
+  ip        String?
+  createdAt DateTime @default(now())
+
+  // Optional relations back to Admin or Student
+  admin     Admin?   @relation(fields: [actorId], references: [id], map: "AuditLog_admin_fkey")
+  student   Student? @relation(fields: [actorId], references: [id], map: "AuditLog_student_fkey")
+}
+
+enum Role {
+  SUPER_ADMIN
+  EXAM_ADMIN
+}
+
+enum ActorType {
+  ADMIN
+  STUDENT
+}
+
+enum AttemptStatus {
+  IN_PROGRESS
+  SUBMITTED
+  TIMEOUT
+}
+
